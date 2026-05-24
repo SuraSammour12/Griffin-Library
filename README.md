@@ -1,155 +1,205 @@
-# 📖 EverQuote — AI-Powered Reading Companion
+<div align="center">
 
-> A semantic book recommender + personal reading tracker, built with sentence-transformers, FAISS, and Streamlit.
+<img src="static/griffin_logo.png" width="120" alt="Griffin Library Logo" />
 
-[![Streamlit App](https://img.shields.io/badge/streamlit-app-FF4B4B?logo=streamlit)](https://streamlit.io)
-[![Python](https://img.shields.io/badge/python-3.10+-blue?logo=python)](https://python.org)
-[![Tests](https://img.shields.io/badge/tests-48%20passing-success)](#testing)
-[![License](https://img.shields.io/badge/license-MIT-green)](#license)
+# Griffin Library
 
----
+### *Where knowledge is the ultimate treasure*
 
-## ✨ What makes it different
+An AI-powered personal reading companion built with Python and Streamlit.
+Search books by feeling, track your reading rituals, preserve quotes, and get personalized recommendations - all in one place.
 
-Most reading apps are databases with checkboxes. EverQuote uses **semantic AI** at every layer:
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat&logo=python&logoColor=white)](https://python.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.33+-FF4B4B?style=flat&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![FAISS](https://img.shields.io/badge/FAISS-Vector_Search-0066CC?style=flat)](https://faiss.ai)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
 
-🔭 **Search by feeling.** Describe a mood — "a quiet meditation on grief" — not keywords. The AI understands meaning via 768-dim sentence embeddings.
-
-✨ **Personalized "For You".** Builds a taste vector from your rated books and surfaces matches you'll actually love. Uses **MMR re-ranking** for diversity.
-
-🪶 **Semantic quote search.** Find that line you half-remember. "The part about courage and fear" — done.
-
-🧠 **AI Insights.** Reading-DNA cards generated from your patterns: pace, taste signature, stalled books, eclectic palate.
-
-🖼️ **Quote-to-image export.** Render any saved quote as a beautiful 1080×1080 PNG ready for sharing.
-
-🔥 **Streaks & goals.** Light habit-loop layer to keep the reading momentum going.
+</div>
 
 ---
 
-## 🏗️ Architecture
+## What is Griffin Library?
+
+Griffin Library is a personal reading tracker that goes beyond lists and checkboxes. It combines semantic AI search, personalized recommendations, quote management, and reading session timers - all wrapped in a lore-inspired interface that makes reading feel like an adventure.
+
+---
+
+## Features
+
+### The Scrolls - AI Book Search
+Describe a feeling, a mood, or a theme in plain words. The Oracle reads meaning, not keywords.
+
+> *"I want to live inside the mind of someone the world calls a villain - understand every decision, every scar that made them this way, every moment that could have gone differently. Not to justify it. Just to finally understand how a person becomes what they become."*
+
+The engine returns semantically matched books with confidence scores, match reasons, and genre chips.
+
+Also includes a Classic Search mode for searching by title, author, or genre with filters.
+
+---
+
+### Chosen for You - Personalized Recommendations
+After you rate and read a few books, the Oracle builds a 768-dimensional taste profile from your library and finds undiscovered books closest to your reading soul.
+
+Results explain exactly why each book was chosen, with MMR re-ranking to ensure variety.
+
+---
+
+### The Archives - Catalog Insights
+A read-only analytics view of the full catalog: 8,577 books, 4,960 unique authors, 608 genres. Browse top-rated books, most popular titles, genre distributions, and more.
+
+---
+
+### My Collection - Personal Library
+Organize books across four shelves: In Progress, To Acquire, Sealed (read), and My Tomes (custom entries).
+
+For each book you can track page progress, leave a rating, write Scholar's Notes, and inscribe passages with page numbers and custom tags.
+
+When a book is sealed, the Griffin celebrates with you.
+
+---
+
+### Inscriptions - Quote Management
+Every passage you save is searchable by meaning using the Oracle Search engine.
+
+> *"something about how patience is actually a form of wisdom, not weakness"*
+
+Quotes can also be exported as styled PNG images (Render as Relic) in five visual palettes: Ink, Rose, Sage, Ocean, Violet.
+
+---
+
+### Reading Rituals - Session Timer
+Start a timed reading session linked to a specific book (Bound Ritual) or as free exploration (Open Vigil). The live countdown timer tracks your session, and when you finish you record your page progress directly.
+
+All sessions are logged with timestamps, pages read, and duration. The full history is filterable and sortable.
+
+---
+
+### The Oracle - AI Reading Coach
+Archon, the Oracle of Griffin Library, asks you a few questions about your reading goals and forges a personalized Scroll of Intent: a reading plan with daily pages, sessions per week, and a task board you can check off and customize.
+
+---
+
+### Grand Hall - Dashboard
+Your personal reading dashboard: KPI strip, daily quote from world literature, books in progress with page progress bars, weekly streak calendar, and six weekly reading challenges.
+
+---
+
+## Screenshots
+
+### Welcome
+![Welcome Screen](screenshots/01_welcome.png)
+
+### AI Search - The Scrolls
+![AI Search](screenshots/02_ai_search.png)
+
+### The Oracle - Consultation
+![Oracle Consultation](screenshots/03_oracle_plan.png)
+
+### The Oracle - Scroll of Intent
+![Scroll of Intent](screenshots/04_oracle_plan.png)
+
+### Reading Rituals - Live Timer
+![Reading Timer](screenshots/05_session.png)
+
+### Inscriptions - Quote Export
+![Quotes](screenshots/06_quotes.png)
+
+### Grand Hall - Dashboard
+![Dashboard](screenshots/07_dashboard.png)
+
+
+---
+
+## Data Pipeline
+
+The recommendation engine was built from two merged datasets using a 6-notebook pipeline:
+
+| Step | Notebook | Output |
+|---|---|---|
+| Data Understanding | `01_data_understanding.ipynb` | Dataset decision |
+| Clean and Merge | `02_clean_merge.ipynb` | `books_merged.csv` - 8,577 books |
+| EDA | `03_eda.ipynb` | Insights and patterns |
+| Feature Engineering | `04_feature_engineering.ipynb` | `books_features.csv` - 15 columns |
+| Model | `05_model.ipynb` | `book_index.faiss` + `books_cleaned.pkl` |
+| Validate | `06_validate.ipynb` | Quality review |
+
+**Sources:** Goodreads ratings data + CMU Book Summaries corpus
+**Model:** `all-mpnet-base-v2` (768-dim sentence embeddings)
+**Index:** FAISS `IndexFlatIP` - exact cosine search over 8,577 books
+**Scoring:** Hybrid (semantic score + rating_norm + popularity_norm) with MMR re-ranking
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Interface | Streamlit |
+| Semantic Search | Sentence Transformers (`all-mpnet-base-v2`) |
+| Vector Index | FAISS (`IndexFlatIP`) |
+| Data Validation | Pydantic v2 |
+| AI Coach | Groq API (LLaMA) |
+| Image Export | Pillow |
+| Storage | Atomic JSON with automatic daily backups |
+
+---
+
+## Project Structure
 
 ```
-everquote/
-├── app.py                  ← Streamlit entry point
-├── core/                   ← Pure business logic (no Streamlit)
-│   ├── schemas.py          ← Pydantic models (type-safe data)
-│   ├── storage.py          ← Atomic JSON writes + auto-backups
-│   ├── library.py          ← Library service
-│   ├── recommender.py      ← Hybrid scoring + MMR + explanations
-│   ├── quote_search.py     ← Semantic search over user's quotes
-│   ├── insights.py         ← AI-generated reading insights
-│   ├── quote_image.py      ← PNG quote rendering
-│   └── validation.py       ← Query sanity-checking
+Griffin-Library/
 ├── app/
-│   ├── views/              ← Streamlit UI (one file per page)
-│   └── styles/main.css     ← Production design system
-├── tests/                  ← pytest suite (48 passing)
-├── data/                   ← Runtime: library.json + backups/
-└── models/                 ← Pre-built FAISS index + catalog
+│   ├── views/          # All page views (home, discover, sessions, etc.)
+│   └── styles/         # main.css design system
+├── core/               # Business logic (library, recommender, storage, etc.)
+├── notebooks/          # Data pipeline (01 through 06)
+├── tests/              # Unit tests for library and validation
+├── static/             # Logo and background assets
+├── app.py              # Application entry point
+├── requirements.txt
+├── LICENSE
+└── README.md
 ```
 
-**Why this split?** The `core/` layer is pure Python — fully unit-testable, no Streamlit imports. The `app/` layer is just rendering. This means: tests run fast, business logic can be reused (CLI, API), and the codebase scales beyond a single-page demo.
-
 ---
 
-## 🧠 The AI stack
+## Getting Started
 
-| Component         | Tech                         | Why                                                  |
-|-------------------|------------------------------|------------------------------------------------------|
-| Embeddings        | `all-mpnet-base-v2`          | Strong semantic alignment, 768-d, fits in memory     |
-| Vector index      | `FAISS` (flat L2)            | <100ms retrieval over 8.5K books                     |
-| Hybrid scoring    | semantic + rating + popularity | Beats pure semantic for serendipity                  |
-| Diversity         | **MMR re-ranking** (λ=0.75)  | Prevents 10 near-identical results                   |
-| Explanations      | Concept extraction over catalog vocab | "Why this book?" surfaces matched themes |
-| User profile      | Weighted-mean embedding      | rating/5 for finished, 0.5 for reading, 0.2 for want |
-
-The recommender exposes three public methods:
-- `search(query, …)` — semantic search with hybrid scoring + MMR
-- `recommend_for_you(library)` — personalized picks from taste vector
-- `all_genres()` — catalog vocabulary
-
-Everything is decoupled from the UI and unit-testable.
-
----
-
-## 🛡️ Production engineering
-
-| Concern              | How it's solved                                    |
-|----------------------|----------------------------------------------------|
-| Data corruption      | Atomic writes (`tempfile` + `os.replace` + `fsync`) |
-| Schema drift         | Pydantic validation on every load + auto-migration  |
-| User data loss       | Daily rolling backups (last 7 kept) in `data/backups/` |
-| Recovery             | Falls back to backups when main file is corrupted   |
-| Salvage mode         | Drops invalid books, keeps the rest                 |
-| Type safety          | Pydantic schemas for all persisted data             |
-| Tests                | 48 passing (`pytest tests/ -v`)                     |
-| Cold-start UX        | Cached `@st.cache_resource` for the model           |
-| Graceful degradation | App still works if AI fails to load                 |
-
----
-
-## 🚀 Getting started
-
-### Prerequisites
-
-- Python 3.10+
-- `models/book_index.faiss` and `models/books_cleaned.pkl` (the pre-built FAISS index and catalog DataFrame)
-
-### Install
-
+### 1. Clone the repository
 ```bash
-git clone https://github.com/yourname/everquote.git
-cd everquote
+git clone https://github.com/SuraSammour12/Griffin-Library.git
+cd Griffin-Library
+```
+
+### 2. Install dependencies
+```bash
 pip install -r requirements.txt
 ```
 
-### Run
+### 3. Build the model files
 
+Run the notebooks in order inside the `notebooks/` folder to generate:
+- `models/book_index.faiss`
+- `models/books_cleaned.pkl`
+
+You will need the raw datasets (Goodreads + CMU Book Summaries) placed in `data/raw/`.
+
+### 4. Set up the Groq API key (for The Oracle)
+
+Create a `.streamlit/secrets.toml` file:
+```toml
+GROQ_API_KEY = "your_key_here"
+```
+
+### 5. Run the app
 ```bash
 streamlit run app.py
 ```
 
-Open `http://localhost:8501`.
-
-### Run tests
-
-```bash
-pytest tests/ -v
-```
-
 ---
 
-## 🌐 Deploy to Streamlit Cloud
+## License
 
-1. Push the repo to GitHub.
-2. Go to [share.streamlit.io](https://share.streamlit.io).
-3. Connect the repo and set:
-   - **Main file:** `app.py`
-   - **Python version:** 3.10
-4. Deploy.
+MIT License - Copyright (c) 2026 Sura Sammour
 
-The model files in `models/` are loaded once via `@st.cache_resource` so cold-start is the only slow page.
-
----
-
-## 📊 What's worth highlighting
-
-If you're skimming the code for the engineering bits:
-
-- **`core/recommender.py`** — `_mmr_rerank`, `recommend_for_you`, `_explain_match`
-- **`core/storage.py`** — atomic writes, backup rotation, schema migration
-- **`core/quote_search.py`** — incremental embedding cache invalidation
-- **`core/validation.py`** — fixed regex bug that rejected "strengths" / "rhythms"
-- **`tests/test_validation.py`** — regression tests for the regex bug
-- **`app/views/discover.py`** — AI-first UI with prominent match badges
-
----
-
-## 📜 License
-
-MIT — see [LICENSE](LICENSE).
-
----
-
-Built with ☕ and curiosity.
+See [LICENSE](LICENSE) for full terms.
