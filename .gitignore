@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Streamlit
+.streamlit/secrets.toml
+
+# User data — personal library files, never commit
+data/
+
+# Models — too large for Git, generate locally by running notebooks
+models/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
