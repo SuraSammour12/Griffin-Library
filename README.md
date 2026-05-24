@@ -95,6 +95,9 @@ Your personal reading dashboard: KPI strip, daily quote from world literature, b
 ### The Oracle - Consultation
 ![Oracle Consultation](screenshots/03_oracle_plan.png)
 
+⚠️ Oops! The conversation continued after the screenshot - that's why the plan shows 4×/week based on my responses. 🙂
+
+
 ### The Oracle - Scroll of Intent
 ![Scroll of Intent](screenshots/04_oracle_plan.png)
 
