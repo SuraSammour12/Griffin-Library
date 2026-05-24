@@ -101,9 +101,6 @@ class Recommender:
     def _encode(self, text: str) -> np.ndarray:
         return self.model.encode([text], normalize_embeddings=True).astype(np.float32)
 
-    def _encode_batch(self, texts: List[str]) -> np.ndarray:
-        return self.model.encode(texts, normalize_embeddings=True).astype(np.float32)
-
     # ─────────────────────────────────────────────────────────
     # Main search
     # ─────────────────────────────────────────────────────────
@@ -251,6 +248,7 @@ class Recommender:
             embs = np.vstack([self.index.reconstruct(i) for i in idxs])
         except Exception:
             # If reconstruct unsupported, fall back to no diversity
+            logger.warning("MMR rerank skipped: index.reconstruct() unavailable, returning candidates as-is")
             return candidates
 
         selected = [0]  # start with top-relevance candidate
@@ -382,9 +380,9 @@ class Recommender:
                     continue
 
                 semantic = float(score)   # cosine similarity from FAISS
-                hybrid   = (semantic * 0.7
-                            + float(row.get("rating_norm", 0)) * 0.2
-                            + float(row.get("popularity_norm", 0)) * 0.1)
+                hybrid   = (semantic * 0.65
+                            + float(row.get("rating_norm", 0)) * 0.25
+                            + float(row.get("popularity_norm", 0)) * 0.10)
 
                 candidates.append({
                     "_idx":          int(idx),
