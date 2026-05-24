@@ -97,7 +97,6 @@ Your personal reading dashboard: KPI strip, daily quote from world literature, b
 
 ⚠️ Oops! The conversation continued after the screenshot - that's why the plan shows 4×/week based on my responses. 🙂
 
-
 ### The Oracle - Scroll of Intent
 ![Scroll of Intent](screenshots/04_oracle_plan.png)
 
@@ -110,6 +109,13 @@ Your personal reading dashboard: KPI strip, daily quote from world literature, b
 ### Grand Hall - Dashboard
 ![Dashboard](screenshots/07_dashboard.png)
 
+---
+
+## System Architecture
+
+![Griffin Library Architecture](screenshots/griffin_library_architecture.png)
+
+The system is built in four layers: a 6-notebook data pipeline that embeds and indexes 8,577 books into FAISS, an AI engine handling hybrid scoring and MMR diversity reranking, a Streamlit application layer with 11 pages, and a core data layer with atomic JSON writes and automatic daily backups.
 
 ---
 
@@ -126,9 +132,9 @@ The recommendation engine was built from two merged datasets using a 6-notebook 
 | Model | `05_model.ipynb` | `book_index.faiss` + `books_cleaned.pkl` |
 | Validate | `06_validate.ipynb` | Quality review |
 
-**Sources:** Goodreads ratings data + CMU Book Summaries corpus
-**Model:** `all-mpnet-base-v2` (768-dim sentence embeddings)
-**Index:** FAISS `IndexFlatIP` - exact cosine search over 8,577 books
+**Sources:** Goodreads ratings data + CMU Book Summaries corpus  
+**Model:** `all-mpnet-base-v2` (768-dim sentence embeddings)  
+**Index:** FAISS `IndexFlatIP` - exact cosine search over 8,577 books  
 **Scoring:** Hybrid (semantic score + rating_norm + popularity_norm) with MMR re-ranking
 
 ---
